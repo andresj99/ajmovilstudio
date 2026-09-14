@@ -4,7 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>AJ Móvil Studio — Yopal</title>
+<meta name="description" content="Accesorios originales y servicio técnico de celulares y computadores en Yopal, con recogida a domicilio.">
+<meta name="theme-color" content="#0b0b0c">
+<link rel="icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -34,13 +38,80 @@
     overflow-x:hidden;
   }
 
-  /* fondo circuito sutil */
+  /* ---------- capas de fondo ---------- */
+
+  .hexmesh{
+    position:fixed; inset:0;
+    z-index:0;
+    opacity:0.16;
+    pointer-events:none;
+  }
+
   .circuit-bg{
     position:fixed; inset:0;
     z-index:0;
-    opacity:0.35;
     pointer-events:none;
   }
+  .trace{
+    fill:none;
+    stroke:url(#traceGrad);
+    stroke-width:1.1;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:var(--len);
+    stroke-dashoffset:var(--len);
+    animation: energize 1.6s cubic-bezier(.35,.8,.4,1) forwards;
+    opacity:0.55;
+  }
+  @keyframes energize{ to{ stroke-dashoffset:0; } }
+
+  .pad{
+    fill:#0b0b0c;
+    stroke:var(--gold-2);
+    stroke-width:1.2;
+    opacity:0;
+    animation: padOn .5s ease forwards;
+  }
+  @keyframes padOn{ to{ opacity:.75; } }
+
+  .via{
+    fill:var(--gold-1);
+    opacity:0;
+    animation: viaOn .6s ease forwards;
+  }
+  @keyframes viaOn{ to{ opacity:.85; } }
+
+  .halo{
+    position:fixed;
+    top:-40px; left:50%;
+    transform:translateX(-50%);
+    width:min(620px, 150vw);
+    height:520px;
+    z-index:0;
+    pointer-events:none;
+    background:radial-gradient(ellipse at 50% 32%,
+      rgba(244,211,94,0.13) 0%,
+      rgba(201,154,46,0.06) 34%,
+      transparent 68%);
+  }
+
+  .vignette{
+    position:fixed; inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:radial-gradient(ellipse at 50% 38%,
+      transparent 32%,
+      rgba(11,11,12,0.5) 72%,
+      rgba(11,11,12,0.9) 100%);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .trace{ animation:none; stroke-dashoffset:0; }
+    .pad{ animation:none; opacity:.75; }
+    .via{ animation:none; opacity:.85; }
+  }
+
+  /* ---------- contenido ---------- */
 
   .wrap{
     position:relative;
@@ -49,11 +120,9 @@
     max-width:420px;
     opacity:0;
     transform:translateY(14px);
-    animation: rise 0.7s cubic-bezier(.2,.7,.3,1) forwards;
+    animation: rise 0.7s cubic-bezier(.2,.7,.3,1) .25s forwards;
   }
-  @keyframes rise{
-    to{opacity:1; transform:translateY(0);}
-  }
+  @keyframes rise{ to{opacity:1; transform:translateY(0);} }
   @media (prefers-reduced-motion: reduce){
     .wrap{animation:none; opacity:1; transform:none;}
   }
@@ -71,7 +140,7 @@
     height:auto;
     margin-bottom:14px;
     display:block;
-    filter: drop-shadow(0 6px 18px rgba(0,0,0,0.55));
+    filter: drop-shadow(0 8px 26px rgba(0,0,0,0.6)) drop-shadow(0 0 22px rgba(244,211,94,0.10));
   }
 
   h1{
@@ -110,15 +179,19 @@
     align-items:center;
     gap:14px;
     padding:17px 20px;
-    background:var(--panel);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.035), transparent 60%),
+      var(--panel);
     border:1px solid var(--line);
     clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
     text-decoration:none;
     color:var(--text);
+    box-shadow: 0 2px 14px rgba(0,0,0,0.5);
     transition: border-color .25s ease, background .25s ease, transform .12s ease;
   }
   .btn:active{ transform:scale(0.98); }
   .btn:hover{ border-color: var(--gold-1); }
+  .btn:focus-visible{ outline:2px solid var(--gold-1); outline-offset:3px; }
 
   .btn .ico{
     flex:0 0 auto;
@@ -145,9 +218,25 @@
     background:linear-gradient(135deg, var(--gold-1), var(--gold-2));
     border:none;
     color:#1a1408;
+    box-shadow: 0 6px 26px rgba(201,154,46,0.22);
+    overflow:hidden;
   }
   .btn.primary .label small{ color:#3a2e10; }
   .btn.primary .label b{ font-size:16.5px; }
+
+  .btn.primary::after{
+    content:"";
+    position:absolute;
+    top:0; left:-60%;
+    width:45%; height:100%;
+    background:linear-gradient(100deg, transparent, rgba(255,255,255,0.45), transparent);
+    transform:skewX(-18deg);
+    animation: sweep 1.1s ease-out 1.5s 1;
+  }
+  @keyframes sweep{ to{ left:130%; } }
+  @media (prefers-reduced-motion: reduce){
+    .btn.primary::after{ display:none; }
+  }
 
   footer{
     margin-top:38px;
@@ -174,24 +263,74 @@
 </head>
 <body>
 
-<svg class="circuit-bg" viewBox="0 0 400 900" preserveAspectRatio="xMidYMid slice">
-  <g stroke="#c99a2e" stroke-width="1" fill="none">
-    <path d="M20 60 L120 60 L140 80 L140 180"/>
-    <path d="M380 120 L300 120 L280 140 L280 260"/>
-    <path d="M30 400 L100 400 L120 420 L220 420"/>
-    <path d="M370 500 L320 500 L300 480 L300 360"/>
-    <path d="M10 700 L90 700 L110 720 L110 820"/>
-    <path d="M390 780 L330 780 L310 760 L210 760"/>
+<svg class="hexmesh" aria-hidden="true">
+  <defs>
+    <pattern id="hexpat" width="56" height="97" patternUnits="userSpaceOnUse" patternTransform="scale(0.9)">
+      <path d="M28 0 L56 16 L56 48 L28 64 L0 48 L0 16 Z M28 64 L56 80 M28 64 L0 80"
+            fill="none" stroke="#c99a2e" stroke-width="0.6"/>
+    </pattern>
+    <radialGradient id="hexfade" cx="50%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="hexmask">
+      <rect width="100%" height="100%" fill="url(#hexfade)"/>
+    </mask>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#hexpat)" mask="url(#hexmask)"/>
+</svg>
+
+<svg class="circuit-bg" viewBox="0 0 400 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="traceGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4d35e"/>
+      <stop offset="1" stop-color="#6b5214"/>
+    </linearGradient>
+    <linearGradient id="fadeX" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0"    stop-color="#fff"/>
+      <stop offset="0.16" stop-color="#fff"/>
+      <stop offset="0.34" stop-color="#1a1a1a"/>
+      <stop offset="0.66" stop-color="#1a1a1a"/>
+      <stop offset="0.84" stop-color="#fff"/>
+      <stop offset="1"    stop-color="#fff"/>
+    </linearGradient>
+    <mask id="sideMask">
+      <rect x="-20" y="0" width="440" height="900" fill="url(#fadeX)"/>
+    </mask>
+  </defs>
+
+  <g mask="url(#sideMask)">
+    <path class="trace" style="--len:460; animation-delay:.15s" d="M-10 92 L96 92 L124 120 L124 206 L152 234 L152 300"/>
+    <path class="trace" style="--len:520; animation-delay:.3s"  d="M410 150 L322 150 L294 178 L294 252 L268 278 L268 340 L240 368"/>
+    <path class="trace" style="--len:430; animation-delay:.45s" d="M-10 372 L64 372 L92 400 L168 400 L196 428"/>
+    <path class="trace" style="--len:480; animation-delay:.6s"  d="M410 470 L344 470 L316 442 L316 372 L340 348 L340 262"/>
+    <path class="trace" style="--len:500; animation-delay:.75s" d="M-10 660 L72 660 L100 688 L100 790 L128 818 L128 900"/>
+    <path class="trace" style="--len:520; animation-delay:.9s"  d="M410 742 L330 742 L302 714 L214 714 L186 742 L186 900"/>
+    <path class="trace" style="--len:300; animation-delay:.55s" d="M-10 540 L48 540 L76 568 L76 622"/>
+    <path class="trace" style="--len:320; animation-delay:.7s"  d="M410 588 L362 588 L334 616 L334 676"/>
   </g>
-  <g fill="#f4d35e">
-    <circle cx="140" cy="180" r="3"/>
-    <circle cx="280" cy="260" r="3"/>
-    <circle cx="220" cy="420" r="3"/>
-    <circle cx="300" cy="360" r="3"/>
-    <circle cx="110" cy="820" r="3"/>
-    <circle cx="210" cy="760" r="3"/>
+
+  <g mask="url(#sideMask)">
+    <circle class="pad" cx="152" cy="300" r="5.5" style="animation-delay:1.55s"/>
+    <circle class="pad" cx="240" cy="368" r="5.5" style="animation-delay:1.7s"/>
+    <circle class="pad" cx="196" cy="428" r="5.5" style="animation-delay:1.85s"/>
+    <circle class="pad" cx="340" cy="262" r="5.5" style="animation-delay:1.95s"/>
+    <circle class="pad" cx="76"  cy="622" r="5.5" style="animation-delay:2.05s"/>
+    <circle class="pad" cx="334" cy="676" r="5.5" style="animation-delay:2.15s"/>
+  </g>
+
+  <g mask="url(#sideMask)">
+    <circle class="via" cx="124" cy="120" r="2.6" style="animation-delay:1.6s"/>
+    <circle class="via" cx="294" cy="178" r="2.6" style="animation-delay:1.7s"/>
+    <circle class="via" cx="92"  cy="400" r="2.6" style="animation-delay:1.8s"/>
+    <circle class="via" cx="316" cy="442" r="2.6" style="animation-delay:1.9s"/>
+    <circle class="via" cx="100" cy="688" r="2.6" style="animation-delay:2s"/>
+    <circle class="via" cx="302" cy="714" r="2.6" style="animation-delay:2.1s"/>
   </g>
 </svg>
+
+<div class="halo" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
 
 <div class="wrap">
   <header>
@@ -205,28 +344,28 @@
   <nav class="links">
     <a class="btn primary" href="https://wa.me/573239162040" target="_blank" rel="noopener">
       <span class="ico">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="#1a1408"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.02h-.01a8.14 8.14 0 0 1-4.15-1.14l-.3-.18-3.11.82.83-3.03-.19-.31a8.11 8.11 0 0 1-1.25-4.35c0-4.49 3.65-8.14 8.15-8.14 2.18 0 4.22.85 5.76 2.39a8.08 8.08 0 0 1 2.38 5.76c0 4.49-3.66 8.18-8.11 8.18zm4.47-6.1c-.24-.12-1.44-.71-1.67-.79-.22-.08-.38-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.53.06-.24-.12-1.03-.38-1.96-1.21-.72-.65-1.21-1.44-1.35-1.68-.14-.24-.02-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.32-.75-1.81-.2-.48-.4-.41-.55-.42-.14-.01-.3-.01-.46-.01-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.13 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#1a1408" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.02h-.01a8.14 8.14 0 0 1-4.15-1.14l-.3-.18-3.11.82.83-3.03-.19-.31a8.11 8.11 0 0 1-1.25-4.35c0-4.49 3.65-8.14 8.15-8.14 2.18 0 4.22.85 5.76 2.39a8.08 8.08 0 0 1 2.38 5.76c0 4.49-3.66 8.18-8.11 8.18zm4.47-6.1c-.24-.12-1.44-.71-1.67-.79-.22-.08-.38-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.53.06-.24-.12-1.03-.38-1.96-1.21-.72-.65-1.21-1.44-1.35-1.68-.14-.24-.02-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.32-.75-1.81-.2-.48-.4-.41-.55-.42-.14-.01-.3-.01-.46-.01-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.13 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg>
       </span>
       <span class="label"><b>WhatsApp</b><small>Escríbenos y compra</small></span>
     </a>
 
     <a class="btn" href="https://wa.me/c/573239162040" target="_blank" rel="noopener">
       <span class="ico">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f4d35e" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9h18M8 4v5"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f4d35e" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9h18M8 4v5"/></svg>
       </span>
       <span class="label"><b>Catálogo</b><small>Ver productos disponibles</small></span>
     </a>
 
     <a class="btn" href="https://instagram.com/ajmovilstudio" target="_blank" rel="noopener">
       <span class="ico">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f4d35e" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f4d35e" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
       </span>
       <span class="label"><b>Instagram</b><small>@ajmovilstudio</small></span>
     </a>
 
     <a class="btn" href="https://www.facebook.com/share/1CEkLhPoGf/?mibextid=wwXIfr" target="_blank" rel="noopener">
       <span class="ico">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f4d35e" stroke-width="1.6"><path d="M15 8h-2a2 2 0 0 0-2 2v10M9 13h4"/><rect x="3" y="3" width="18" height="18" rx="4"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f4d35e" stroke-width="1.6" aria-hidden="true"><path d="M15 8h-2a2 2 0 0 0-2 2v10M9 13h4"/><rect x="3" y="3" width="18" height="18" rx="4"/></svg>
       </span>
       <span class="label"><b>Facebook</b><small>Síguenos y déjanos tu opinión</small></span>
     </a>
