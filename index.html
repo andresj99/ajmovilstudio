@@ -66,23 +66,22 @@
     margin-bottom:38px;
   }
 
-  .hex{
-    width:84px; height:84px;
-    margin-bottom:18px;
+  .logo{
+    width:170px;
+    height:auto;
+    margin-bottom:14px;
+    display:block;
+    filter: drop-shadow(0 6px 18px rgba(0,0,0,0.55));
   }
 
   h1{
     font-family:'Oswald', sans-serif;
-    font-weight:700;
-    font-size:26px;
-    letter-spacing:0.02em;
-    line-height:1.1;
-    background:linear-gradient(135deg, var(--gold-1), var(--gold-3));
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
+    font-weight:600;
+    font-size:13px;
+    letter-spacing:0.18em;
+    line-height:1.4;
+    color:var(--gold-2);
   }
-  h1 span{display:block; font-size:13px; font-weight:500; letter-spacing:0.16em; margin-top:6px; color:var(--muted); background:none; -webkit-text-fill-color:var(--muted);}
 
   .tagline{
     margin-top:14px;
@@ -175,22 +174,29 @@
 </head>
 <body>
 
-<img src="logo.png" alt="AJ Móvil Studio" style="width:120px;height:auto;margin-bottom:18px;">
+<svg class="circuit-bg" viewBox="0 0 400 900" preserveAspectRatio="xMidYMid slice">
+  <g stroke="#c99a2e" stroke-width="1" fill="none">
+    <path d="M20 60 L120 60 L140 80 L140 180"/>
+    <path d="M380 120 L300 120 L280 140 L280 260"/>
+    <path d="M30 400 L100 400 L120 420 L220 420"/>
+    <path d="M370 500 L320 500 L300 480 L300 360"/>
+    <path d="M10 700 L90 700 L110 720 L110 820"/>
+    <path d="M390 780 L330 780 L310 760 L210 760"/>
+  </g>
+  <g fill="#f4d35e">
+    <circle cx="140" cy="180" r="3"/>
+    <circle cx="280" cy="260" r="3"/>
+    <circle cx="220" cy="420" r="3"/>
+    <circle cx="300" cy="360" r="3"/>
+    <circle cx="110" cy="820" r="3"/>
+    <circle cx="210" cy="760" r="3"/>
+  </g>
+</svg>
 
 <div class="wrap">
   <header>
-    <svg class="hex" viewBox="0 0 100 110">
-      <polygon points="50,2 96,27 96,83 50,108 4,83 4,27" fill="#141316" stroke="url(#gg)" stroke-width="2"/>
-      <defs>
-        <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#f4d35e"/>
-          <stop offset="1" stop-color="#8a6a1c"/>
-        </linearGradient>
-      </defs>
-      <text x="50" y="55" text-anchor="middle" font-family="Oswald, sans-serif" font-weight="700" font-size="30" fill="url(#gg)">AJ</text>
-      <text x="50" y="75" text-anchor="middle" font-family="Manrope, sans-serif" font-size="9" letter-spacing="1" fill="#c99a2e">MÓVIL</text>
-    </svg>
-    <h1>AJ Móvil Studio<span>ACCESORIOS · SERVICIO TÉCNICO</span></h1>
+    <img class="logo" src="logo.png" alt="AJ Móvil Studio — accesorios y servicio técnico">
+    <h1>ACCESORIOS · SERVICIO TÉCNICO</h1>
     <p class="tagline">Cargadores, cables y audífonos originales — más reparación de celulares y computadores con recogida a domicilio en Yopal.</p>
   </header>
 
